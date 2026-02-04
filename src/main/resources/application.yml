@@ -1,0 +1,41 @@
+server:
+  port: 8081
+
+info:
+  app:
+    description: "Pedido Ingestion API - Entry Point (Ambev Integration)"
+
+spring:
+  application:
+    name: pedido-service
+
+  main:
+    banner-mode: "console"
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    template:
+      retry:
+        enabled: true
+        initial-interval: 1000ms
+        max-attempts: 3
+    publisher-confirm-type: correlated
+    publisher-returns: true
+
+iam:
+  jwt-secret: ${JWT_SECRET:M2I3YzA5OGU1YmFhN2U3Zjk0ZWY0ZGIyYmU5ZDBjZjkxZWRhYmFmNjA4MGY1ZDIzM2M4ZGM0ZTI5N2I0YmU3YQ==}
+
+logging:
+  level:
+    root: INFO
+    com.br.sync_cloud_bff: DEBUG
+    org.springframework.amqp: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["health", "info"]
