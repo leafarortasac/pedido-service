@@ -32,26 +32,28 @@ Com o serviço rodando, a documentação interativa pode ser acessada em: 🔗 h
 Endpoint: /v1/pedidos
 
 O serviço aceita uma lista de pedidos para processamento em lote. Abaixo, um exemplo de payload para execução:
-  JSON
-  [
-    {
-      "id": "65bef1a8e4b0a1a2b3c4d501",
-      "codfilial": "000001",
-      "cliente": { "id": "65bef1a8e4b0a1a2b3c4d5c1", "codigo": "000101", "nome": "Ambev Centro" },
-      "itens": [
-        { "id": "65bef1a8e4b0a1a2b3c4d5a1", "item": 1, "produto": { "id": "65bef1a8e4b0a1a2b3c4d5p1", "codigo": "000501", "nome": "Skol 350ml" }, "qtde": 10.0, "precoUnitario": 3.50, "codfilial": "000001" },
-        { "id": "65bef1a8e4b0a1a2b3c4d5a2", "item": 2, "produto": { "id": "65bef1a8e4b0a1a2b3c4d5p2", "codigo": "000502", "nome": "Brahma 350ml" }, "qtde": 5.0, "precoUnitario": 4.00, "codfilial": "000001" }
+      
+    JSON
+      [
+        {
+          "id": "65bef1a8e4b0a1a2b3c4d501",
+          "codfilial": "000001",
+          "cliente": { "id": "65bef1a8e4b0a1a2b3c4d5c1", "codigo": "000101", "nome": "Ambev Centro" },
+          "itens": [
+            { "id": "65bef1a8e4b0a1a2b3c4d5a1", "item": 1, "produto": { "id": "65bef1a8e4b0a1a2b3c4d5p1", "codigo": "000501", "nome": "Skol 350ml" }, "qtde": 10.0, "precoUnitario": 3.50, "codfilial": "000001" },
+            { "id": "65bef1a8e4b0a1a2b3c4d5a2", "item": 2, "produto": { "id": "65bef1a8e4b0a1a2b3c4d5p2", "codigo": "000502", "nome": "Brahma 350ml" }, "qtde": 5.0, "precoUnitario": 4.00, "codfilial": "000001" }
+          ]
+        },
+        {
+          "id": "65bef1a8e4b0a1a2b3c4d506",
+          "codfilial": "000002",
+          "cliente": { "id": "65bef1a8e4b0a1a2b3c4d5c6", "codigo": "000201", "nome": "Ambev Norte" },
+          "itens": [
+            { "id": "65bef1a8e4b0a1a2b3c4d5a7", "item": 1, "produto": { "id": "65bef1a8e4b0a1a2b3c4d5p1", "codigo": "000501", "nome": "Skol 350ml" }, "qtde": 100.0, "precoUnitario": 3.40, "codfilial": "000002" }
+          ]
+        }
       ]
-    },
-    {
-      "id": "65bef1a8e4b0a1a2b3c4d506",
-      "codfilial": "000002",
-      "cliente": { "id": "65bef1a8e4b0a1a2b3c4d5c6", "codigo": "000201", "nome": "Ambev Norte" },
-      "itens": [
-        { "id": "65bef1a8e4b0a1a2b3c4d5a7", "item": 1, "produto": { "id": "65bef1a8e4b0a1a2b3c4d5p1", "codigo": "000501", "nome": "Skol 350ml" }, "qtde": 100.0, "precoUnitario": 3.40, "codfilial": "000002" }
-      ]
-    }
-]
+  
 🔄 Fluxo de Dados
 
 O Cliente obtém um token no IAM-Service.
