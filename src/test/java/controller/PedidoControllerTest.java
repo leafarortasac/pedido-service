@@ -3,6 +3,7 @@ package controller;
 import com.br.pedido_service.controller.PedidoController;
 import com.br.pedido_service.producer.PedidoProducer;
 import com.br.shared.contracts.model.PedidoRepresentation;
+import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,23 +28,24 @@ public class PedidoControllerTest {
     private PedidoController controller;
 
     @Test
-    @DisplayName("Deve retornar 202 Accepted quando o lote for processado com sucesso")
-    void deveRetornarAccepted() {
+    @DisplayName("Deve processar lote de pedidos aleatórios com sucesso")
+    void deveProcessarLoteComSucesso() {
 
-        List<PedidoRepresentation> lista = List.of(
-                new PedidoRepresentation(), new PedidoRepresentation());
+        var generator = new EasyRandom();
+
+        var lista = generator.objects(PedidoRepresentation.class, 5).toList();
 
         var response = controller.recebePedidos(lista);
 
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-        verify(producer, times(2)).enviaPedidoParaFila(any());
+        verify(producer, times(5)).enviaPedidoParaFila(any());
     }
 
     @Test
     @DisplayName("Deve retornar 500 Internal Server Error quando houver falha no producer")
     void deveRetornarError() {
 
-        List<PedidoRepresentation> lista = List.of(new PedidoRepresentation());
+        var lista = List.of(new PedidoRepresentation());
         doThrow(new RuntimeException("Falha no Rabbit")).when(producer).enviaPedidoParaFila(any());
 
         var response = controller.recebePedidos(lista);
