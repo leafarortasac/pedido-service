@@ -1,0 +1,53 @@
+package controller;
+
+import com.br.pedido_service.controller.PedidoController;
+import com.br.pedido_service.producer.PedidoProducer;
+import com.br.shared.contracts.model.PedidoRepresentation;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class PedidoControllerTest {
+
+    @Mock
+    private PedidoProducer producer;
+
+    @InjectMocks
+    private PedidoController controller;
+
+    @Test
+    @DisplayName("Deve retornar 202 Accepted quando o lote for processado com sucesso")
+    void deveRetornarAccepted() {
+
+        List<PedidoRepresentation> lista = List.of(
+                new PedidoRepresentation(), new PedidoRepresentation());
+
+        var response = controller.recebePedidos(lista);
+
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        verify(producer, times(2)).enviaPedidoParaFila(any());
+    }
+
+    @Test
+    @DisplayName("Deve retornar 500 Internal Server Error quando houver falha no producer")
+    void deveRetornarError() {
+
+        List<PedidoRepresentation> lista = List.of(new PedidoRepresentation());
+        doThrow(new RuntimeException("Falha no Rabbit")).when(producer).enviaPedidoParaFila(any());
+
+        var response = controller.recebePedidos(lista);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+}
